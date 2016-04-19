@@ -104,19 +104,48 @@ class Connection extends BaseOptions{
             $this->AMQPConnection = new AMQPConnection($this->host, $this->port, $this->username, $this->password, $this->vhost);
             $this->channel = $this->AMQPConnection->channel();
 
+			/**
+		     * Declares queue, creates if needed
+		     *
+		     * @param string $queue
+		     * @param bool $passive
+		     * @param bool $durable
+		     * @param bool $exclusive
+		     * @param bool $auto_delete
+		     * @param bool $nowait
+		     * @param array $arguments
+		     * @param int $ticket
+		     * @return mixed|null
+		     */
 			$this->channel->queue_declare($this->queue_name,
 					$this->queque_settings['passive'],
 					$this->queque_settings['durable'],
 					$this->queque_settings['exclusive'],
-					$this->queque_settings['auto_delete']);
+					$this->queque_settings['auto_delete'],
+					$this->queque_settings['nowait']);
 
-            $this->channel->exchange_declare($this->exchange,
+			/**
+		     * Declares exchange, creates if needed
+		     *
+			* @param string $exchange
+	        * @param string $type
+	        * @param bool $passive
+	        * @param bool $durable
+	        * @param bool $auto_delete
+	        * @param bool $internal
+	        * @param bool $nowait
+	        * @param array $arguments
+	        * @param int $ticket
+	        * @return mixed|null
+			*/
+			$this->channel->exchange_declare($this->exchange,
 					$this->exchange_settings['type'],
 					$this->exchange_settings['passive'],
 					$this->exchange_settings['durable'],
 					$this->exchange_settings['auto_delete'],
+					$this->exchange_settings['internal'],
 					$this->exchange_settings['nowait']);
-					
+
             $this->channel->queue_bind($this->queue_name, $this->exchange);
         }
         catch (Exception $e)
