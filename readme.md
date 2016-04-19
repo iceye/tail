@@ -30,7 +30,7 @@ Installation
 
 **Preparation**
 
-Open your composer.json file and add the following to the require array: 
+Open your composer.json file and add the following to the require array:
 
 ```js
 "iceye/tail": "1.*"
@@ -116,7 +116,20 @@ return array(
             'vhost'        => '/',
             'exchange'     => 'default_exchange_name',
             'consumer_tag' => 'consumer',
-            'default_delivery' => 1, // Values are 1 => DELIVERY_MODE_NON_PERSISTENT and 2 => DELIVERY_MODE_PERSISTENT 
+			'queque_settings' => [
+				'passive'=> false, //can use this to check whether an exchange exists without modifying the server state
+				'durable'=> false, // if default_delivery == 1 THIS CANNOT BE TRUE! When true RabbitMQ will never lose our queue if a crash occurs - the queue will survive a broker restart, for sure true it's slower
+				'exclusive'=> false, // used by only one connection and the queue will be deleted when that connection closes
+				'auto_delete'=> false, //queue is deleted when last consumer unsubscribes
+				],
+			'exchange_settings' => [
+					'type'=>'direct',
+					'passive'=>false, //do not create exchange
+					'durable'=>false, // if default_delivery == 1 THIS CANNOT BE TRUE! When true RabbitMQ will never lose our exchange if a crash occurs - the exchange will survive a broker restart, for sure true it's slower
+					'auto_delete'=>false, //If set, the exchange is deleted when all queues have finished using it.
+					'nowait'=>true //do not send a reply method
+				],
+            'default_delivery' => 1, // Values are 1 => DELIVERY_MODE_NON_PERSISTENT and 2 => DELIVERY_MODE_PERSISTENT
         ),    
         'other_server' => array(
             'host'         => '192.168.0.10',
@@ -144,7 +157,7 @@ Adding messages to queue:
 
 **Adding message changing RabbitMQ server**
 
-```php	
+```php
     Tail::add('queue-name', 'message', array('connection_name' => 'connection_name_config_file'));
 ```
 
@@ -163,8 +176,8 @@ Adding messages to queue:
 		'exchange' => 'exchange_name',
 		'vhost' => 'vhost',
 		'delivery_mode' => DELIVERY_MODE_PERSISTENT
-	);	
-	
+	);
+
     Tail::add('queue-name', 'message', $options);
 ```
 
@@ -189,7 +202,7 @@ Listening queues:
 
 ```php
 Tail::listen('queue-name', function ($message) {
-    		
+
 	//Your message logic code
 });
 ```
@@ -207,7 +220,7 @@ $options = array(
 );
 
 Tail::listenWithOptions('queue-name', $options, function ($message) {
-    		
+
 	//Your message logic code		
 });
 ```
