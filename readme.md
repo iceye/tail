@@ -1,7 +1,7 @@
-mookofe/tail
+iceye/tail
 =========
 
-RabbitMQ and PHP client for Laravel and Lumen that allows you to add and listen queues messages just simple.
+RabbitMQ and PHP client for Laravel and Lumen that allows you to add and listen queues messages just simple. Added configurable delivery mode.
 
 [![Build Status](https://travis-ci.org/mookofe/tail.svg?branch=master)](https://travis-ci.org/mookofe/tail)
 [![Latest Stable Version](https://poser.pugx.org/mookofe/tail/v/stable.svg)](https://packagist.org/packages/mookofe/tail)
@@ -116,6 +116,7 @@ return array(
             'vhost'        => '/',
             'exchange'     => 'default_exchange_name',
             'consumer_tag' => 'consumer',
+            'default_delivery' => 1, // Values are 1 => DELIVERY_MODE_NON_PERSISTENT and 2 => DELIVERY_MODE_PERSISTENT 
         ),    
         'other_server' => array(
             'host'         => '192.168.0.10',
@@ -160,7 +161,8 @@ Adding messages to queue:
 	$options = array (
 		'connection_name' => 'connection_name_config_file',
 		'exchange' => 'exchange_name',
-		'vhost' => 'vhost'
+		'vhost' => 'vhost',
+		'delivery_mode' => DELIVERY_MODE_PERSISTENT
 	);	
 	
     Tail::add('queue-name', 'message', $options);
