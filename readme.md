@@ -22,7 +22,7 @@ Requirements
 
 Version
 ----
-1.0.4
+1.0.5
 
 
 Installation
@@ -33,7 +33,7 @@ Installation
 Open your composer.json file and add the following to the require array: 
 
 ```js
-"mookofe/tail": "1.*"
+"iceye/tail": "1.*"
 ```
 
 **Install dependencies**
