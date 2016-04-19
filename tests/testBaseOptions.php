@@ -7,17 +7,17 @@ use Mookofe\Tail\BaseOptions;
 /**
  * Test base option class
  *
- * @author Victor Cruz <cruzrosario@gmail.com> 
+ * @author Victor Cruz <cruzrosario@gmail.com>
  */
 class testBaseOptions extends \PHPUnit_Framework_TestCase
 {
 
     protected $input;
-    
+
     public function __construct()
     {
         $this->input = Mockery::mock('Illuminate\Config\Repository');
-        
+
     }
 
     public function tearDown()
@@ -44,7 +44,7 @@ class testBaseOptions extends \PHPUnit_Framework_TestCase
         $options = array('invalid_field' => 'this_is_invalid_field');
         $baseOptions = new BaseOptions($this->input);
 
-        $result = $baseOptions->validateOptions($options);        
+        $result = $baseOptions->validateOptions($options);
     }
 
     public function testSetOptions()
@@ -54,7 +54,7 @@ class testBaseOptions extends \PHPUnit_Framework_TestCase
 
         $baseOptions->setOptions($options);
 
-        //Assertss        
+        //Assertss
         $this->assertObjectHasAttribute('queue_name', $baseOptions);
         $this->assertEquals($baseOptions->queue_name, $options['queue_name']);
     }
@@ -64,7 +64,7 @@ class testBaseOptions extends \PHPUnit_Framework_TestCase
         //Mock Input object
         $this->input->shouldReceive('get')->once()->andReturn('just_to_return');
         $this->input->shouldReceive('get')->once()->andReturn(array());
-        
+
         //Setup enviroment
         $baseOptions = new BaseOptions($this->input);
         $options = $baseOptions->buildConnectionOptions();

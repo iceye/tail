@@ -7,8 +7,8 @@ return array(
     | Default AMQP Server Connection
     |--------------------------------------------------------------------------
     |
-    | The name of your default AMQP server connection. This connection will 
-    | be used as the default for all queues operations unless a different 
+    | The name of your default AMQP server connection. This connection will
+    | be used as the default for all queues operations unless a different
     | name is given when performing said operation. This connection name
     | should be listed in the array of connections below.
     |
@@ -31,7 +31,20 @@ return array(
             'vhost'        => '/',
             'exchange'     => 'amq.direct',
             'consumer_tag' => 'consumer',
-            'default_delivery' => 1, // Values are 1 => DELIVERY_MODE_NON_PERSISTENT and 2 => DELIVERY_MODE_PERSISTENT 
-        ),      
+			'queque_settings' => [
+				'passive'=> false, //can use this to check whether an exchange exists without modifying the server state
+				'durable'=> false, // if default_delivery == 1 THIS CANNOT BE TRUE! When true RabbitMQ will never lose our queue if a crash occurs - the queue will survive a broker restart, for sure true it's slower
+				'exclusive'=> false, // used by only one connection and the queue will be deleted when that connection closes
+				'auto_delete'=> false, //queue is deleted when last consumer unsubscribes
+				],
+			'exchange_settings' => [
+					'type'=>'direct',
+					'passive'=>false, //do not create exchange
+					'durable'=>false, // if default_delivery == 1 THIS CANNOT BE TRUE! When true RabbitMQ will never lose our exchange if a crash occurs - the exchange will survive a broker restart, for sure true it's slower
+					'auto_delete'=>false, //If set, the exchange is deleted when all queues have finished using it.
+					'nowait'=>true //do not send a reply method
+				],
+            'default_delivery' => 1, // Values are 1 => DELIVERY_MODE_NON_PERSISTENT and 2 => DELIVERY_MODE_PERSISTENT
+        ),
     ),
 );

@@ -7,10 +7,10 @@ use PhpAmqpLib\Connection\AMQPConnection;
 /**
  * Connection class, used to manage connection to the RabbitMQ Server
  *
- * @author Victor Cruz <cruzrosario@gmail.com> 
+ * @author Victor Cruz <cruzrosario@gmail.com>
  */
 class Connection extends BaseOptions{
-    
+
     /**
      * RabbitMQ server name or IP
      *
@@ -46,6 +46,20 @@ class Connection extends BaseOptions{
      */
     public $consumer_tag;
 
+	/**
+     * RabbitMQ queue creation config
+     *
+     * @var array
+     */
+    public $queue_settings;
+
+	/**
+     * RabbitMQ exchange creation config
+     *
+     * @var array
+     */
+    public $exchange_settings;
+
     /**
      * RabbitMQ AMQP Connection
      *
@@ -70,7 +84,7 @@ class Connection extends BaseOptions{
      */
     public function __construct(array $options = null)
     {
-        $this->allowedOptions = array_merge($this->allowedOptions, array('host', 'port', 'username', 'password', 'consumer_tag'));
+        $this->allowedOptions = array_merge($this->allowedOptions, array('host', 'port', 'username', 'password', 'consumer_tag', 'queque_settings','exchange_settings','default_delivery'));
 
         if (!$options)
             $options = $this->buildConnectionOptions();
@@ -86,11 +100,23 @@ class Connection extends BaseOptions{
     public function open()
     {
         try
-        { 
+        {
             $this->AMQPConnection = new AMQPConnection($this->host, $this->port, $this->username, $this->password, $this->vhost);
             $this->channel = $this->AMQPConnection->channel();
-            $this->channel->queue_declare($this->queue_name, false, true, false, false);
-            $this->channel->exchange_declare($this->exchange, 'direct', false, true, false);
+
+			$this->channel->queue_declare($this->queue_name,
+					$this->queque_settings['passive'],
+					$this->queque_settings['durable'],
+					$this->queque_settings['exclusive'],
+					$this->queque_settings['auto_delete']);
+
+            $this->channel->exchange_declare($this->exchange,
+					$this->exchange_settings['type'],
+					$this->exchange_settings['passive'],
+					$this->exchange_settings['durable'],
+					$this->exchange_settings['auto_delete'],
+					$this->exchange_settings['nowait']);
+					
             $this->channel->queue_bind($this->queue_name, $this->exchange);
         }
         catch (Exception $e)
