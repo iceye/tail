@@ -1,5 +1,5 @@
 {
-    "name": "iceye/tail",
+    "name": "mookofe/tail",
     "description": "RabbitMQ and PHP client for Laravel that allows you to add and listen queues messages just simple",
     "keywords": ["laravel5", "laravel", "rabbitmq", "queue", "package", "client", "Victor Cruz", "mookofe" ],
     "license": "MIT",
@@ -25,7 +25,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Iceye\\Tail\\": "src/"
+            "Mookofe\\Tail\\": "src/"
         }
     },    
     "minimum-stability": "dev"
