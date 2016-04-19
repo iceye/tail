@@ -16,7 +16,7 @@ class BaseOptions {
      *
      * @var array
      */
-    protected $allowedOptions = array('exchange', 'vhost', 'connection_name', 'queue_name');
+    protected $allowedOptions = array('exchange', 'vhost', 'connection_name', 'queue_name','default_delivery');
 
     /**
      * Config repository dependency
@@ -52,6 +52,14 @@ class BaseOptions {
      * @var string
      */
     public $queue_name;
+    
+    
+    /**
+     * Default delivery mode
+     *
+     * @var string
+     */
+    public $default_delivery_mode;
 
 
     /**
