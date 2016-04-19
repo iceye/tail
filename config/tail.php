@@ -31,6 +31,7 @@ return array(
             'vhost'        => '/',
             'exchange'     => 'amq.direct',
             'consumer_tag' => 'consumer',
+            'default_delivery' => 1, // Values are 1 => DELIVERY_MODE_NON_PERSISTENT and 2 => DELIVERY_MODE_PERSISTENT 
         ),      
     ),
 );
