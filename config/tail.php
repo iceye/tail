@@ -41,7 +41,7 @@ return array(
 			'exchange_settings' => [
 					'type'=>'direct',
 					'passive'=>false, //do not create exchange
-					'durable'=>false, // if default_delivery == 1 THIS CANNOT BE TRUE! When true RabbitMQ will never lose our exchange if a crash occurs - the exchange will survive a broker restart, for sure true it's slower
+					'durable'=>true, // check this value on rabbitmq conf/status, if using existing exchange this should same as exsisting feature value
 					'auto_delete'=>false, //If set, the exchange is deleted when all queues have finished using it.
 					'internal'=>false, //???
 					'nowait'=>true //do not send a reply method
