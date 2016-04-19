@@ -1,13 +1,17 @@
 {
-    "name": "mookofe/tail",
+    "name": "iceye/tail",
     "description": "RabbitMQ and PHP client for Laravel that allows you to add and listen queues messages just simple",
     "keywords": ["laravel5", "laravel", "rabbitmq", "queue", "package", "client", "Victor Cruz", "mookofe" ],
     "license": "MIT",
-    "version": "v1.0.3",
+    "version": "v1.0.5",
     "authors": [
         {
             "name": "Victor Cruz",
             "email": "cruzrosario@gmail.com"
+        },
+        {
+            "name": "Sandro Bottoni",
+            "email": "sandro.bottoni@gmail.com"
         }
     ],
     "require": {
@@ -21,8 +25,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Mookofe\\Tail\\": "src/"
+            "Iceye\\Tail\\": "src/"
         }
     },    
-    "minimum-stability": "stable"
+    "minimum-stability": "dev"
 }
