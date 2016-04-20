@@ -21,9 +21,9 @@ class Message extends BaseOptions {
      */
     public $message = null;
 
-	public $connection = null;
+	public static  $connection = null;
 
-	public $msgObj = null;
+	public static  $msgObj = null;
 
     /**
      * Message constructor
@@ -34,7 +34,7 @@ class Message extends BaseOptions {
      */
     public function __construct(Repository $config, array $options = NULL)
     {
-        parent::__construct($config);
+		parent::__construct($config);
 
         if ($options){
             $this->setOptions($options);
@@ -43,26 +43,26 @@ class Message extends BaseOptions {
     }
 
 	public function connect(){
-		if($this->connection == null){
+		if(self::$connection == null){
 			try
 	        {
-				$this->connection = new Connection($this->buildConnectionOptions());
-				$this->connection->open();
+				self::$connection = new Connection($this->buildConnectionOptions());
+				self::$connection->open();
 			}
 	        catch (Exception $e)
 	        {
-	            $this->connection->close();
+	            self::$connection->close();
 	            throw new Exception($e);
 	        }
 		}
 
-		if($this->msgObj == null){
-			$this->msgObj = new AMQPMessage("", array('content_type' => 'text/plain', 'delivery_mode' => $this->default_delivery_mode==1?1:2));
+		if(self::$msgObj == null){
+			self::$msgObj = new AMQPMessage("", array('content_type' => 'text/plain', 'delivery_mode' => $this->default_delivery_mode==1?1:2));
 		}
 	}
 
 	public function close(){
-		$this->connection->close();
+		self::$connection->close();
 	}
 
     /**
@@ -76,7 +76,7 @@ class Message extends BaseOptions {
      */
     public function add($queue_name, $message, array $options = NULL)
     {
-        $this->queue_name = $queue_name;
+		$this->queue_name = $queue_name;
         $this->message = $message;
 
         if ($options)
@@ -94,15 +94,16 @@ class Message extends BaseOptions {
     {
         try
         {
+			//Connect only the first time...
 			$this->connect();
 
-			$this->msgObj->setBody($this->message);
-            $this->connection->channel->basic_publish($this->msgObj, $this->exchange, $this->queue_name);
+			self::$msgObj->setBody($this->message);
+            self::$connection->channel->basic_publish(self::$msgObj, $this->exchange, $this->queue_name);
 
         }
         catch (Exception $e)
         {
-            $this->connection->close();
+            self::$connection->close();
             throw new Exception($e);
         }
     }
