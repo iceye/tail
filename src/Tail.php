@@ -8,9 +8,35 @@ use Mookofe\Tail\Listener;
 /**
  * Tail class, used as facade handler
  *
- * @author Victor Cruz <cruzrosario@gmail.com> 
+ * @author Victor Cruz <cruzrosario@gmail.com>
  */
 class Tail {
+
+	private $connetcionManager = null;
+	/**
+     * Connect, use this to optimize performance, 1 connection per app if used in the right way!
+	 * call connect and close in your app flow
+     *
+     * @return void
+     */
+    public function connect()
+    {
+		$this->connetcionManager = App::make('Mookofe\Tail\Message');
+		$this->connetcionManager->connect();
+    }
+
+	/**
+     * Close connection, use this to optimize performance, 1 connection/disconnect per app if used in the right way!
+	 * call connect and close in your app flow
+     *
+     * @return void
+     */
+    public function close()
+    {
+		if($this->connetcionManager!=null){
+			$this->connetcionManager->close();
+		}
+    }
 
     /**
      * Add a message directly to the queue server
@@ -65,5 +91,5 @@ class Tail {
         $listener = App::make('Mookofe\Tail\Listener');
         $listener->listen($queue_name, $options, $callback);
     }
-    
+
 }
