@@ -176,7 +176,7 @@ class Connection extends BaseOptions{
 		}
 		catch (Exception $e)
         {
-            
+
         }
     }
 
