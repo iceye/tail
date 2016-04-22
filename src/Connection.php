@@ -147,12 +147,19 @@ class Connection extends BaseOptions{
 					$this->exchange_settings['nowait']);
 
             $this->channel->queue_bind($this->queue_name, $this->exchange);
+
+			$shutdown = function () use (&$self) {
+            	$self->close();
+        	};
+        	register_shutdown_function($shutdown);
         }
         catch (Exception $e)
         {
             throw new Exception($e);
         }
     }
+
+
 
     /**
      * Close the connection with the RabbitMQ server
@@ -161,10 +168,16 @@ class Connection extends BaseOptions{
      */
     public function close()
     {
-        if (isset($this->AMQPConnection))
-            $this->AMQPConnection->close();
-        if (isset($this->channel))
-            $this->channel->close();
+		try{
+	        if (isset($this->AMQPConnection))
+	            $this->AMQPConnection->close();
+	        if (isset($this->channel))
+	            $this->channel->close();
+		}
+		catch (Exception $e)
+        {
+            
+        }
     }
 
 }
