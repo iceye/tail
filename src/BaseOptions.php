@@ -66,7 +66,7 @@ class BaseOptions {
      *
      * @var string
      */
-	public $routingkey_prefix
+	public $routingkey_prefix;
 
     /**
      * Constructor
