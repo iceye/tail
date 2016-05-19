@@ -98,7 +98,7 @@ class Message extends BaseOptions {
 			$this->connect();
 
 			self::$msgObj->setBody($this->message);
-            self::$connection->channel->basic_publish(self::$msgObj, $this->exchange, $this->queue_name);
+            self::$connection->channel->basic_publish(self::$msgObj, $this->exchange, $this->routingkey_prefix.".".$this->queue_name);
 
         }
         catch (Exception $e)
