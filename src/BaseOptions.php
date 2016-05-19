@@ -16,7 +16,7 @@ class BaseOptions {
      *
      * @var array
      */
-    protected $allowedOptions = array('exchange', 'vhost', 'connection_name', 'queue_name', 'default_delivery');
+    protected $allowedOptions = array('exchange', 'vhost', 'connection_name', 'queue_name', 'default_delivery','routingkey_prefix');
 
     /**
      * Config repository dependency
@@ -61,6 +61,12 @@ class BaseOptions {
      */
     public $default_delivery_mode;
 
+	/**
+     * Default routing key prefix
+     *
+     * @var string
+     */
+	public $routingkey_prefix
 
     /**
      * Constructor
